@@ -53,6 +53,44 @@ public class ContentFragment extends BaseFragment {
 
         vp.setAdapter(new MyAdaper());
 
+        rgMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int idCheck) {
+                switch (idCheck) {
+                    case R.id.rb_home :
+                        vp.setCurrentItem(0);
+
+                        break;
+                    case R.id.rb_news :
+                        vp.setCurrentItem(1);
+                        break;
+                    case R.id.rb_setting :
+                        vp.setCurrentItem(2);
+                        break;
+                }
+            }
+        });
+
+        /**
+         * 设置viewPager页面改变的监听，页面改变radiabutton也随之改变
+         */
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         //默认选择主页
         rgMain.check(R.id.rb_home);
     }
