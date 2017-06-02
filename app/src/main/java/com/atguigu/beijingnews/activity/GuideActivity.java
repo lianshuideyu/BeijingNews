@@ -1,5 +1,6 @@
 package com.atguigu.beijingnews.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.atguigu.beijingnews.R;
+import com.atguigu.beijingnews.utils.CacheUtils;
 import com.atguigu.beijingnews.utils.DensityUtil;
 
 import java.util.ArrayList;
@@ -90,10 +92,7 @@ public class GuideActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.btn_start_main)
-    public void onViewClicked() {
 
-    }
 
     private class MyPagerAdapter extends PagerAdapter {
         @Override
@@ -182,5 +181,16 @@ public class GuideActivity extends AppCompatActivity {
         public void onPageScrollStateChanged(int state) {
 
         }
+    }
+
+    @OnClick(R.id.btn_start_main)
+    public void onViewClicked() {
+        //保存记录已经进入到主页面
+        CacheUtils.putBoolean(this,"start_main",true);
+        //跳转到主页面
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        //关闭当前页面
+        finish();
     }
 }
