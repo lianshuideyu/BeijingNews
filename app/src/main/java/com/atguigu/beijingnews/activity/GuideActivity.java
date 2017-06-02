@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.atguigu.beijingnews.R;
+import com.atguigu.beijingnews.utils.DensityUtil;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,8 @@ public class GuideActivity extends AppCompatActivity {
 
         //设置ViewPager的适配器
         vp.setAdapter(new MyPagerAdapter());
+
+        vp.addOnPageChangeListener(new MyOnPageChangeListener());
     }
 
     private void initData() {
@@ -52,6 +55,18 @@ public class GuideActivity extends AppCompatActivity {
             //设置背景
             imageView.setBackgroundResource(ids[i]);
             imageViews.add(imageView);
+
+            //添加三个灰点
+            ImageView point = new ImageView(this);
+            point.setImageResource(R.drawable.guide_point_normal);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(GuideActivity.this,10),DensityUtil.dip2px(GuideActivity.this,10));
+            point.setLayoutParams(params);
+            
+            if(i != 0) {
+                params.leftMargin = DensityUtil.dip2px(GuideActivity.this,10);
+            }
+            //添加到线性布局
+            llPointGroup.addView(point);
         }
 
     }
@@ -103,6 +118,37 @@ public class GuideActivity extends AppCompatActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
 
             container.removeView((View) object);
+        }
+    }
+
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+        /**
+         * 当滑到的时候回调
+         * @param position  当前滑动的页面的下标位置
+         * @param positionOffset 滑动百分比
+         * @param positionOffsetPixels 滑动的像素
+         */
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        /**
+         * 当选中某个页面的时候回调
+         * @param position
+         */
+        @Override
+        public void onPageSelected(int position) {
+            if(position == imageViews.size() - 1) {
+                btnStartMain.setVisibility(View.VISIBLE);
+            }else {
+                btnStartMain.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     }
 }
