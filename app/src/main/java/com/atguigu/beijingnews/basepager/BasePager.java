@@ -7,9 +7,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.atguigu.beijingnews.R;
+import com.atguigu.beijingnews.activity.MainActivity;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/6/2.
@@ -36,13 +38,20 @@ public class BasePager {
 
         //初始化布局
         rootView = View.inflate(context, R.layout.base_pager, null);
-        ButterKnife.inject(this,rootView);
+        ButterKnife.inject(this, rootView);
     }
 
     /**
      * 子类要绑定数据的时候重写该方法
      */
-    public void initData(){
+    public void initData() {
+
+    }
+
+    @OnClick(R.id.ib_menu)
+    public void onViewClicked() {
+        //关-开
+        ((MainActivity) context).getSlidingMenu().toggle();
 
     }
 }

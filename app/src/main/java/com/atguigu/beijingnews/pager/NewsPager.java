@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.atguigu.beijingnews.activity.MainActivity;
 import com.atguigu.beijingnews.basepager.BasePager;
+import com.atguigu.beijingnews.basepager.MenuDetailBasePager;
 import com.atguigu.beijingnews.domain.NewsCenterBean;
 import com.atguigu.beijingnews.fragment.LeftMenuFragment;
 import com.atguigu.beijingnews.utils.ConstantUtils;
@@ -15,6 +17,7 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -25,8 +28,15 @@ import okhttp3.Call;
 
 public class NewsPager extends BasePager {
 
-
+    /**
+     * 左侧页面的数据集合
+     */
     private List<NewsCenterBean.DataBean> datas;
+
+    /**
+     * 左侧菜单详情的页面集合
+     */
+    private ArrayList<MenuDetailBasePager> basePagers;
 
     public NewsPager(Context context) {
         super(context);
@@ -40,6 +50,7 @@ public class NewsPager extends BasePager {
         Log.e("TAG","NewsPager---initData");
         //设置标题
         tvTitle.setText("新闻页面");
+        ibMenu.setVisibility(View.VISIBLE);
 
         //创建子类视图
         TextView textView = new TextView(context);
@@ -93,9 +104,32 @@ public class NewsPager extends BasePager {
 
         //将数据传到左侧菜单
         MainActivity mainActivity = (MainActivity) context;
+
+        //实例化详情页面
+        basePagers = new ArrayList<>();
+        basePagers.add(new NewsMenuDetailPager(context));//新闻详情页面
+        basePagers.add(new TopicMenuDetailPager(context));//专题详情页面
+        basePagers.add(new PhotosMenuDetailPager(context));//组图详情页面
+        basePagers.add(new InteractMenuDetailPager(context));//互动详情页面
+        basePagers.add(new VoteMenuDetailPager(context));//投票详情页面
+
+
         //得到左侧菜单Fragment
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
         //设置数据
         leftMenuFragment.setData(datas);
+
+
+    }
+
+    public void swichPager(int position) {
+        MenuDetailBasePager basePager = basePagers.get(position);
+        View rootView = basePager.rootView;
+
+        flContent.removeAllViews();
+        flContent.addView(rootView);
+
+
+        basePager.initData();
     }
 }

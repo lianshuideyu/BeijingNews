@@ -120,6 +120,11 @@ public class ContentFragment extends BaseFragment {
         mainActivity.getSlidingMenu().setTouchModeAbove(touchmodeFullscreen);
     }
 
+    public NewsPager getNewsPager() {
+
+        return (NewsPager) pagers.get(1);
+    }
+
 
     class MyAdaper extends PagerAdapter {
         @Override

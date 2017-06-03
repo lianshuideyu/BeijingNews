@@ -12,6 +12,7 @@ import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.activity.MainActivity;
 import com.atguigu.beijingnews.basefragment.BaseFragment;
 import com.atguigu.beijingnews.domain.NewsCenterBean;
+import com.atguigu.beijingnews.pager.NewsPager;
 
 import java.util.List;
 
@@ -40,12 +41,31 @@ public class LeftMenuFragment extends BaseFragment {
                 //刷新适配器，会重新调用适配器中的getview()方法
                 adapter.notifyDataSetChanged();
 
+                //1.得到MainActivity
                 MainActivity mainActivity = (MainActivity) context;
                 mainActivity.getSlidingMenu().toggle();//关<->开
+
+                //根据位置切换到相应的页面
+                switchPager(prePosition);
             }
         });
 
         return listView;
+    }
+
+    /**
+     * 根据位置切换到相应的页面
+     * @param position
+     */
+    private void switchPager(int position) {
+        MainActivity mainActivity = (MainActivity) context;
+        //2得到ContentFragment
+        ContentFragment contentFragment = mainActivity.getContentFragment();
+        //3得到NewsPager
+        NewsPager newsPager = contentFragment.getNewsPager();
+        //4调用切换方法
+        newsPager.swichPager(position);
+
     }
 
     @Override
@@ -56,14 +76,16 @@ public class LeftMenuFragment extends BaseFragment {
 
     public void setData(List<NewsCenterBean.DataBean> datas) {
         this.datas = datas;
-        for(int i = 0; i < datas.size(); i++) {
+        /*for(int i = 0; i < datas.size(); i++) {
             Log.e("TAG","LeftMenuFragment=="+datas.get(i).getTitle());
 
-        }
+        }*/
 
         //设置适配器
         adapter = new LeftMenuAdapter();
         listView.setAdapter(adapter);
+
+        switchPager(prePosition);
     }
 
     class LeftMenuAdapter extends BaseAdapter{
@@ -87,7 +109,7 @@ public class LeftMenuFragment extends BaseFragment {
         @Override
         public View getView(int position, View view, ViewGroup viewGroup) {
             TextView textView = (TextView) View.inflate(context, R.layout.item_leftmenu,null);
-
+            //当适配器被刷新时，这里起作用
             if(prePosition==position){
                 //高亮
                 textView.setEnabled(true);
