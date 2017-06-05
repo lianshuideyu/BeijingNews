@@ -18,6 +18,7 @@ import com.atguigu.beijingnews.domain.NewsCenterBean;
 import com.atguigu.beijingnews.domain.TabDetailPagerBean;
 import com.atguigu.beijingnews.utils.ConstantUtils;
 import com.atguigu.beijingnews.utils.DensityUtil;
+import com.atguigu.beijingnews.view.HorizontalScrollViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     private final NewsCenterBean.DataBean.ChildrenBean childrenBean;
 
-    ViewPager viewpager;
+    HorizontalScrollViewPager viewpager;
     TextView tvTitle;
     LinearLayout llPointGroup;
 
@@ -72,7 +73,7 @@ public class TabDetailPager extends MenuDetailBasePager {
 
         //顶部视图
         View viewTopNews = View.inflate(context,R.layout.tab_detail_topnews, null);
-        viewpager = (ViewPager) viewTopNews.findViewById(R.id.viewpager);
+        viewpager = (HorizontalScrollViewPager) viewTopNews.findViewById(R.id.viewpager);
         tvTitle = (TextView) viewTopNews.findViewById(R.id.tv_title);
         llPointGroup = (LinearLayout) viewTopNews.findViewById(R.id.ll_point_group);
 
