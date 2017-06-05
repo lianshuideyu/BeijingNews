@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +55,10 @@ public class TabDetailPager extends MenuDetailBasePager {
     //记录当前上方viewpager的页码
     private int prePosition = 0;
 
+    //listview新闻列表
+    private List<TabDetailPagerBean.DataBean.NewsBean> news;
+    private MyListAdapter adapter;
+
     public TabDetailPager(Context context, NewsCenterBean.DataBean.ChildrenBean childrenBean) {
         super(context);
         this.childrenBean = childrenBean;
@@ -64,7 +69,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     public View initView() {
         //创建子类的视图
         View view = View.inflate(context, R.layout.pager_tab_detail, null);
-        ButterKnife.inject(this,view);
+        ButterKnife.inject(this, view);
 
         //监听页面的变化
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -99,7 +104,7 @@ public class TabDetailPager extends MenuDetailBasePager {
         //设置数据
 
         url = ConstantUtils.BASE_URL + childrenBean.getUrl();
-        Log.e("TAG","url=="+url);
+        Log.e("TAG", "url==" + url);
         //联网请求
         getDataFromNet();
     }
@@ -139,21 +144,26 @@ public class TabDetailPager extends MenuDetailBasePager {
         //添加viewpager灰色指示点
         //先移除之前的指示点
         llPointGroup.removeAllViews();
-        for(int i = 0; i < topnews.size(); i++) {
+        for (int i = 0; i < topnews.size(); i++) {
             ImageView point = new ImageView(context);
             point.setBackgroundResource(R.drawable.point_selector);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context,8),DensityUtil.dip2px(context,8));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, 8), DensityUtil.dip2px(context, 8));
             point.setLayoutParams(params);
 
-            if(i == 0) {
+            if (i == 0) {
                 point.setEnabled(true);
-            }else {
+            } else {
                 point.setEnabled(false);
-                params.leftMargin = DensityUtil.dip2px(context,8);
+                params.leftMargin = DensityUtil.dip2px(context, 8);
             }
             llPointGroup.addView(point);
         }
+
+        //页面下部listview
+        news = bean.getData().getNews();
+        adapter = new MyListAdapter();
+        lv.setAdapter(adapter);
 
     }
 
@@ -189,6 +199,63 @@ public class TabDetailPager extends MenuDetailBasePager {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+    }
+
+    private class MyListAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return news == null ? 0 : news.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = View.inflate(context, R.layout.item_tab_detail, null);
+                viewHolder = new ViewHolder(convertView);
+                convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            TabDetailPagerBean.DataBean.NewsBean newsBean = news.get(position);
+            viewHolder.tvDesc.setText(newsBean.getTitle());
+            viewHolder.tvTime.setText(newsBean.getPubdate());
+
+            String imageUrl = ConstantUtils.BASE_URL+newsBean.getListimage();
+            Glide.with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.pic_item_list_default)
+                    .error(R.drawable.pic_item_list_default)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(viewHolder.ivIcon);
+
+            return convertView;
+        }
+
+
+    }
+    static class ViewHolder {
+        @InjectView(R.id.iv_icon)
+        ImageView ivIcon;
+        @InjectView(R.id.tv_desc)
+        TextView tvDesc;
+        @InjectView(R.id.tv_time)
+        TextView tvTime;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
         }
     }
 }
