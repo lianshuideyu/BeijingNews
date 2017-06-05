@@ -37,12 +37,11 @@ import okhttp3.Call;
 public class TabDetailPager extends MenuDetailBasePager {
 
     private final NewsCenterBean.DataBean.ChildrenBean childrenBean;
-    @InjectView(R.id.viewpager)
+
     ViewPager viewpager;
-    @InjectView(R.id.tv_title)
     TextView tvTitle;
-    @InjectView(R.id.ll_point_group)
     LinearLayout llPointGroup;
+
     @InjectView(R.id.lv)
     ListView lv;
 
@@ -70,6 +69,16 @@ public class TabDetailPager extends MenuDetailBasePager {
         //创建子类的视图
         View view = View.inflate(context, R.layout.pager_tab_detail, null);
         ButterKnife.inject(this, view);
+
+        //顶部视图
+        View viewTopNews = View.inflate(context,R.layout.tab_detail_topnews, null);
+        viewpager = (ViewPager) viewTopNews.findViewById(R.id.viewpager);
+        tvTitle = (TextView) viewTopNews.findViewById(R.id.tv_title);
+        llPointGroup = (LinearLayout) viewTopNews.findViewById(R.id.ll_point_group);
+
+        //把顶部的部分以添加头的方式加入ListView中
+        lv.addHeaderView(viewTopNews);
+
 
         //监听页面的变化
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
