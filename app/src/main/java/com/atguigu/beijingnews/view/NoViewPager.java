@@ -20,4 +20,14 @@ public class NoViewPager extends ViewPager {
         return true;//把事件消费掉
 
     }
+
+    /**
+     * 将事件传递给孩子
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return false;
+    }
 }
