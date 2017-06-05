@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.atguigu.beijingnews.basepager.MenuDetailBasePager;
 import com.atguigu.beijingnews.domain.NewsCenterBean;
+import com.viewpagerindicator.TabPageIndicator;
 
 /**
  * Created by Administrator on 2017/6/5.
@@ -17,6 +18,7 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     private final NewsCenterBean.DataBean.ChildrenBean childrenBean;
     private TextView textView;
+
 
     public TabDetailPager(Context context, NewsCenterBean.DataBean.ChildrenBean childrenBean) {
         super(context);
