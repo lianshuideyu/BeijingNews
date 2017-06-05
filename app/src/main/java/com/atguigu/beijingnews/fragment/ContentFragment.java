@@ -90,7 +90,7 @@ public class ContentFragment extends BaseFragment {
                 pagers.get(position).initData();
 
                 if(position == 1) {
-                    isEnableSlidingMenu(context,SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    isEnableSlidingMenu(context,SlidingMenu.TOUCHMODE_MARGIN);
                 }else {
                     isEnableSlidingMenu(context,SlidingMenu.TOUCHMODE_NONE);
                 }

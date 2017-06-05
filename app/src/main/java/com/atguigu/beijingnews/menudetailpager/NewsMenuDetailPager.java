@@ -1,4 +1,4 @@
-package com.atguigu.beijingnews.pager;
+package com.atguigu.beijingnews.menudetailpager;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

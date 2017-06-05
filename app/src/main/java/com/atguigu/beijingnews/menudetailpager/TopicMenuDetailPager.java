@@ -1,4 +1,4 @@
-package com.atguigu.beijingnews.pager;
+package com.atguigu.beijingnews.menudetailpager;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,10 +12,10 @@ import com.atguigu.beijingnews.basepager.MenuDetailBasePager;
  * Created by Administrator on 2017/6/3.
  */
 
-public class PhotosMenuDetailPager extends MenuDetailBasePager {
+public class TopicMenuDetailPager extends MenuDetailBasePager {
     private TextView textView;
 
-    public PhotosMenuDetailPager(Context context) {
+    public TopicMenuDetailPager(Context context) {
         super(context);
     }
 
@@ -31,6 +31,6 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
     @Override
     public void initData() {
         super.initData();
-        textView.setText("组图详情页面的内容");
+        textView.setText("专题详情页面的内容");
     }
 }
