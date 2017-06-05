@@ -15,6 +15,7 @@ import com.atguigu.beijingnews.domain.NewsCenterBean;
 import com.atguigu.beijingnews.fragment.LeftMenuFragment;
 import com.atguigu.beijingnews.utils.CacheUtils;
 import com.atguigu.beijingnews.utils.ConstantUtils;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -112,10 +113,10 @@ public class NewsPager extends BasePager {
      * @param json
      */
     private void processData(String json) {
-        //NewsCenterBean newsCenterBean = new Gson().fromJson(json, NewsCenterBean.class);
+        NewsCenterBean newsCenterBean = new Gson().fromJson(json, NewsCenterBean.class);
 
         //手动解析json数据
-        NewsCenterBean newsCenterBean = paseJson(json);
+        //NewsCenterBean newsCenterBean = paseJson(json);
 
         Log.e("TAG", "解析成功==" + newsCenterBean.getData().get(0).getChildren().get(0).getTitle());
         datas = newsCenterBean.getData();
@@ -125,7 +126,7 @@ public class NewsPager extends BasePager {
 
         //实例化详情页面
         basePagers = new ArrayList<>();
-        basePagers.add(new NewsMenuDetailPager(context));//新闻详情页面
+        basePagers.add(new NewsMenuDetailPager(context,datas.get(0)));//新闻详情页面
         basePagers.add(new TopicMenuDetailPager(context));//专题详情页面
         basePagers.add(new PhotosMenuDetailPager(context));//组图详情页面
         basePagers.add(new InteractMenuDetailPager(context));//互动详情页面
