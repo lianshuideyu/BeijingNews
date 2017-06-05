@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.basepager.MenuDetailBasePager;
@@ -32,6 +33,8 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
      */
     private List<TabDetailPager> tabDetailPagers;
 
+    private ImageButton ib_next;
+
     public NewsMenuDetailPager(Context context, NewsCenterBean.DataBean dataBean) {
         super(context);
         this.datas = dataBean.getChildren();
@@ -43,6 +46,14 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
         View view = View.inflate(context, R.layout.pager_news_menu_detail,null);
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
         indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
+        ib_next = (ImageButton) view.findViewById(R.id.ib_next);
+        //点击箭头进入下一页
+        ib_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewpager.setCurrentItem(viewpager.getCurrentItem() + 1);
+            }
+        });
 
 
         return view;
