@@ -152,11 +152,28 @@ public class NewsPager extends BasePager {
         MenuDetailBasePager basePager = basePagers.get(position);
         View rootView = basePager.rootView;
 
+        //设置标题
+        tvTitle.setText(datas.get(position).getTitle());
+
         flContent.removeAllViews();
         flContent.addView(rootView);
 
-
         basePager.initData();
+
+        if(position ==2){
+            //显示
+            ib_switch_list_grid.setVisibility(View.VISIBLE);
+            ib_switch_list_grid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhotosMenuDetailPager basePager1 = (PhotosMenuDetailPager) basePagers.get(2);
+                    basePager1.swichListAndGrid(ib_switch_list_grid);
+                }
+            });
+        }else{
+            //隐藏
+            ib_switch_list_grid.setVisibility(View.GONE);
+        }
     }
 
     private NewsCenterBean paseJson(String json) {
