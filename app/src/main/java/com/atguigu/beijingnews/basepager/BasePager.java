@@ -28,6 +28,7 @@ public class BasePager {
     @InjectView(R.id.fl_content)
     public FrameLayout flContent;
 
+    public ImageButton ib_switch_list_grid;
     /**
      * 代表整个页面
      */
@@ -38,6 +39,8 @@ public class BasePager {
 
         //初始化布局
         rootView = View.inflate(context, R.layout.base_pager, null);
+
+        ib_switch_list_grid = (ImageButton) rootView.findViewById(R.id.ib_switch_list_grid);
         ButterKnife.inject(this, rootView);
     }
 
