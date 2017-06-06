@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -84,7 +86,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     @Override
     public View initView() {
         //创建子类的视图
-        View view = View.inflate(context, R.layout.pager_tab_detail, null);
+        final View view = View.inflate(context, R.layout.pager_tab_detail, null);
         ButterKnife.inject(this, view);
 
         //得到ListView
@@ -120,7 +122,14 @@ public class TabDetailPager extends MenuDetailBasePager {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                if(state ==ViewPager.SCROLL_STATE_DRAGGING){
+                    //消息移除
+                    handler.removeCallbacksAndMessages(null);
+                }else  if(state==ViewPager.SCROLL_STATE_IDLE){
+                    //发消息
+                    handler.removeCallbacksAndMessages(null);
+                    handler.postDelayed(new MyRunnable(),3000);
+                }
             }
         });
 
@@ -258,6 +267,36 @@ public class TabDetailPager extends MenuDetailBasePager {
             adapter.notifyDataSetChanged();//适配器刷新
         }
 
+        //设置自动切换到下一个页面
+        if(handler == null) {
+            handler = new InternalHandler();
+        }
+        handler.removeCallbacksAndMessages(null);
+        //重新发消息
+        handler.postDelayed(new MyRunnable(),3000);
+
+    }
+
+    private InternalHandler handler;
+    class InternalHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            int item = (viewpager.getCurrentItem() + 1) % topnews.size();
+            //设置切换到下一个页面
+            viewpager.setCurrentItem(item);
+
+            handler.postDelayed(new MyRunnable(),3000);
+        }
+    }
+
+    class MyRunnable implements Runnable{
+
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(0);
+        }
     }
 
     private class MyPagerAdapter extends PagerAdapter {
