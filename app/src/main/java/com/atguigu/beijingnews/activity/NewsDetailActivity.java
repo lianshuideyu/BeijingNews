@@ -1,9 +1,12 @@
 package com.atguigu.beijingnews.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     WebView webview;
     @InjectView(R.id.progressbar)
     ProgressBar progressbar;
+    private Uri url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,26 @@ public class NewsDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_detail);
         ButterKnife.inject(this);
         setView();
+
+        url = getIntent().getData();
+
+        WebSettings settings = webview.getSettings();
+
+        settings.setJavaScriptEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setUseWideViewPort(true);
+
+        webview.setWebViewClient(new WebViewClient(){
+            //当页面加载成功
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressbar.setVisibility(View.GONE);
+            }
+        });
+
+        webview.loadUrl(url.toString());
 
     }
 
