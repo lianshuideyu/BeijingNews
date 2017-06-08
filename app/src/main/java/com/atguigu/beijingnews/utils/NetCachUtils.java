@@ -26,11 +26,13 @@ public class NetCachUtils {
     private final LocalCachUtils localCachUtils;
     //用线程池管理线程
     private final ExecutorService executorService;
+    private final MemoryCachUtils memoryCachUtils;
 
-    public NetCachUtils(Handler handler, LocalCachUtils localCachUtils) {
+    public NetCachUtils(Handler handler, LocalCachUtils localCachUtils, MemoryCachUtils memoryCachUtils) {
         this.handler = handler;
         this.localCachUtils = localCachUtils;
         executorService = Executors.newFixedThreadPool(10);
+        this.memoryCachUtils = memoryCachUtils;
     }
 
     public void getBitmapFromNet(final String imageUrl, final int position) {
@@ -62,7 +64,7 @@ public class NetCachUtils {
                         handler.sendMessage(msg);
 
                         //在内存保存一份
-
+                        memoryCachUtils.putBitmap2Memory(imageUrl,bitmap);
 
                         //在本地保存一份
                         localCachUtils.putBitmap2Local(imageUrl,bitmap);

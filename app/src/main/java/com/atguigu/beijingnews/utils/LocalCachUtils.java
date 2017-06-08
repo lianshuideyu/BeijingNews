@@ -14,6 +14,12 @@ import java.io.FileOutputStream;
 
 public class LocalCachUtils {
 
+    private final MemoryCachUtils memoryCachUtils;
+
+    public LocalCachUtils(MemoryCachUtils memoryCachUtils) {
+        this.memoryCachUtils = memoryCachUtils;
+    }
+
     /**
      * 保存图片
      *
@@ -72,6 +78,12 @@ public class LocalCachUtils {
             if(file.exists()) {
                 FileInputStream fis = new FileInputStream(file);
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
+
+                if(bitmap != null) {
+                    //缓存到内存中
+                    memoryCachUtils.putBitmap2Memory(imageUrl,bitmap);
+                }
+
                 return bitmap;
             }
         } catch (Exception e) {
