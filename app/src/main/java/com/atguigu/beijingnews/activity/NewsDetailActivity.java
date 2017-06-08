@@ -66,8 +66,8 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
         });
 
-        webview.loadUrl(url.toString());
-
+//        webview.loadUrl(url.toString());
+        webview.loadUrl("http://news.qq.com/");
     }
 
     private void setView() {
