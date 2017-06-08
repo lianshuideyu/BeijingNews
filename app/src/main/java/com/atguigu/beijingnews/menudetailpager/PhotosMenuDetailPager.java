@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import com.atguigu.beijingnews.adapter.PhotosMenuDetailPagerAdapater;
 import com.atguigu.beijingnews.basepager.MenuDetailBasePager;
 import com.atguigu.beijingnews.domain.NewsCenterBean;
 import com.atguigu.beijingnews.domain.PhotosMenuDetailPagerBean;
+import com.atguigu.beijingnews.utils.CacheUtils;
 import com.atguigu.beijingnews.utils.ConstantUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -73,11 +75,16 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         super.initData();
         //联网请求
         url = ConstantUtils.BASE_URL + dataBean.getUrl();
+
+        String saveJson = CacheUtils.getString(context, url);
+        if(!TextUtils.isEmpty(saveJson)) {
+            processData(saveJson);
+        }
         getDataFromNet(url);
 
     }
 
-    private void getDataFromNet(String url) {
+    private void getDataFromNet(final String url) {
         OkHttpUtils
                 .get()
                 .url(url)
@@ -92,6 +99,8 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("TAG", "图组请求成功==" + response);
+                        //存储--缓存为本地文件
+                        CacheUtils.putString(context,url,response);
                         processData(response);
 
                     }
